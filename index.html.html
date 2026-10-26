@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediFlow | Smarter Patient Flow</title>
+<style>
+  :root { --navy:#15324b; --teal:#087f8c; --mint:#e8f7f5; --ink:#213547; --muted:#607386; --white:#fff; --line:#dce8ed; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; font-family:Inter, "Segoe UI", Arial, sans-serif; color:var(--ink); background:#fbfdfd; line-height:1.6; }
+  a { color:inherit; text-decoration:none; }
+  .wrap { width:min(1120px, 91%); margin:auto; }
+  header { background:rgba(255,255,255,.95); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10; }
+  .nav { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .brand { font-size:1.35rem; font-weight:800; color:var(--navy); letter-spacing:-.5px; }
+  .brand span { color:var(--teal); }
+  .navlinks { display:flex; align-items:center; gap:24px; color:var(--muted); font-size:.94rem; }
+  .btn { display:inline-block; border:0; border-radius:10px; background:var(--teal); color:white; font-weight:700; padding:12px 18px; cursor:pointer; box-shadow:0 5px 14px #087f8c22; }
+  .btn:hover { background:#066b76; }
+  .btn.secondary { background:white; color:var(--navy); border:1px solid var(--line); box-shadow:none; }
+  .hero { padding:76px 0 66px; background:radial-gradient(circle at 85% 18%, #d8f4f0 0, transparent 30%), linear-gradient(135deg,#f4fbfa,#fff 70%); }
+  .hero-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:55px; align-items:center; }
+  .eyebrow { display:inline-block; padding:6px 11px; border-radius:999px; background:#dff4f1; color:#08717b; font-size:.82rem; font-weight:800; letter-spacing:.3px; }
+  h1 { font-size:clamp(2.5rem,5vw,4.4rem); line-height:1.06; letter-spacing:-2px; color:var(--navy); margin:18px 0; }
+  h1 em { color:var(--teal); font-style:normal; }
+  .hero p { color:var(--muted); font-size:1.1rem; max-width:570px; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:25px; }
+  .note { color:#718494; font-size:.83rem!important; margin-top:18px; }
+  .dashboard { background:white; border:1px solid #d9e9e9; border-radius:22px; padding:22px; box-shadow:0 22px 60px #15324b15; transform:rotate(1deg); }
+  .dash-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .dash-head strong { color:var(--navy); font-size:1.05rem; }
+  .live { font-size:.75rem; color:#087c63; background:#e3f8ef; border-radius:99px; padding:5px 9px; font-weight:700; }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .stat { background:#f5fafb; border-radius:12px; padding:13px 10px; }
+  .stat small { display:block; color:var(--muted); font-size:.75rem; }
+  .stat b { color:var(--navy); font-size:1.35rem; }
+  .queue-title { display:flex; justify-content:space-between; margin:22px 0 10px; font-weight:750; color:var(--navy); }
+  .patient { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:12px 0; border-top:1px solid #edf2f4; font-size:.88rem; }
+  .patient small { display:block; color:var(--muted); }
+  .pill { background:#fff0d9; color:#97611a; padding:4px 8px; border-radius:8px; font-size:.76rem; white-space:nowrap; }
+  section { padding:72px 0; }
+  .section-head { max-width:700px; margin:0 auto 34px; text-align:center; }
+  .section-head h2 { color:var(--navy); font-size:clamp(1.8rem,3vw,2.6rem); line-height:1.15; letter-spacing:-.8px; margin:12px 0; }
+  .section-head p { color:var(--muted); margin:0; }
+  .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .card { background:white; border:1px solid var(--line); border-radius:17px; padding:24px; }
+  .icon { width:45px; height:45px; display:grid; place-items:center; border-radius:13px; background:var(--mint); font-size:1.35rem; margin-bottom:17px; }
+  .card h3 { color:var(--navy); margin:0 0 8px; }
+  .card p { color:var(--muted); margin:0; font-size:.96rem; }
+  .benefits { background:#f1f8f8; }
+  .benefit-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
+  .benefit-grid h2 { color:var(--navy); font-size:2.35rem; line-height:1.15; }
+  .checklist { padding:0; list-style:none; }
+  .checklist li { margin:14px 0; display:flex; gap:11px; }
+  .check { color:var(--teal); font-weight:900; }
+  .quote { background:white; border:1px solid var(--line); border-radius:18px; padding:28px; }
+  .quote p { font-size:1.15rem; color:var(--navy); margin-top:0; }
+  .quote small { color:var(--muted); }
+  .cta { background:var(--navy); color:white; text-align:center; padding:65px 0; }
+  .cta h2 { font-size:clamp(1.9rem,4vw,2.8rem); line-height:1.15; margin:0 0 12px; }
+  .cta p { color:#d4e3eb; max-width:650px; margin:0 auto 23px; }
+  .cta .btn { background:#36b8b0; color:#082f3b; }
+  .contact { background:white; }
+  form { max-width:650px; margin:auto; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  label { display:block; font-size:.88rem; font-weight:700; color:var(--navy); }
+  input, textarea, select { width:100%; margin-top:6px; border:1px solid #cadbe1; border-radius:9px; padding:12px; font:inherit; background:#fff; color:var(--ink); }
+  textarea { min-height:105px; resize:vertical; }
+  .full { grid-column:1/-1; }
+  .form-note { color:var(--muted); text-align:center; font-size:.85rem; margin-top:12px; }
+  footer { background:#102a40; color:#c5d7e1; padding:24px 0; font-size:.85rem; }
+  .foot { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  @media(max-width:780px) { .hero-grid,.benefit-grid { grid-template-columns:1fr; gap:32px; } .hero { padding:52px 0; } .cards { grid-template-columns:1fr; } .navlinks a:not(.btn) { display:none; } h1 { letter-spacing:-1px; } .dashboard { transform:none; } }
+  @media(max-width:520px) { form { grid-template-columns:1fr; } .full { grid-column:auto; } .stats { gap:6px; } .stat b { font-size:1.1rem; } .nav { min-height:64px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">Medi<span>Flow</span></a>
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="#features">Features</a><a href="#benefits">Benefits</a><a class="btn" href="#demo">Request a demo</a>
+    </nav>
+  </div>
+</header>
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">SMARTER QUEUES. BETTER CARE.</span>
+        <h1>Less waiting.<br><em>More caring.</em></h1>
+        <p>MediFlow helps hospitals manage patient queues and appointments in real time—so teams can respond to delays, keep patients informed, and run daily operations more smoothly.</p>
+        <div class="actions"><a class="btn" href="#demo">Book a demo →</a><a class="btn secondary" href="#features">Explore features</a></div>
+        <p class="note">Designed for hospital operations teams, front-desk staff, and patient care workflows.</p>
+      </div>
+      <div class="dashboard" aria-label="Illustrative MediFlow dashboard preview">
+        <div class="dash-head"><strong>Today's patient flow</strong><span class="live">● Live overview</span></div>
+        <div class="stats">
+          <div class="stat"><small>In queue</small><b>24</b></div>
+          <div class="stat"><small>Appointments</small><b>58</b></div>
+          <div class="stat"><small>Rooms active</small><b>6</b></div>
+        </div>
+        <div class="queue-title"><span>Queue overview</span><small style="color:#718494;font-weight:500">Illustrative preview</small></div>
+        <div class="patient"><div><b>General consultation</b><small>12 patients waiting</small></div><span class="pill">Monitor</span></div>
+        <div class="patient"><div><b>Paediatrics</b><small>6 patients waiting</small></div><span class="pill" style="background:#e1f7ed;color:#167453">On track</span></div>
+        <div class="patient"><div><b>Orthopaedics</b><small>6 patients waiting</small></div><span class="pill">Review</span></div>
+      </div>
+    </div>
+  </section>
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head"><span class="eyebrow">HOW MEDIFLOW HELPS</span><h2>One clearer view of patient flow</h2><p>Practical tools to help your team manage changing schedules and keep patients updated.</p></div>
+      <div class="cards">
+        <article class="card"><div class="icon">⏱</div><h3>Real-time queue tracking</h3><p>See queue status at a glance and identify bottlenecks before they disrupt the whole schedule.</p></article>
+        <article class="card"><div class="icon">📅</div><h3>Dynamic appointments</h3><p>Adjust appointment flow around doctor availability, consultation delays, and unexpected emergencies.</p></article>
+        <article class="card"><div class="icon">🔔</div><h3>Patient notifications</h3><p>Keep patients informed about queue progress and appointment changes with timely updates.</p></article>
+        <article class="card"><div class="icon">📊</div><h3>Operations dashboard</h3><p>Give hospital teams a central view of patient flow to support better day-to-day decisions.</p></article>
+        <article class="card"><div class="icon">🤝</div><h3>Better team coordination</h3><p>Help front-desk staff and clinical teams stay aligned when schedules change.</p></article>
+        <article class="card"><div class="icon">🏥</div><h3>A smoother patient visit</h3><p>Reduce uncertainty around waiting and make the hospital experience more predictable.</p></article>
+      </div>
+    </div>
+  </section>
+  <section class="benefits" id="benefits">
+    <div class="wrap benefit-grid">
+      <div><span class="eyebrow">BUILT FOR OPERATIONS</span><h2>Help your hospital spend less time managing queues.</h2><p style="color:#607386">MediFlow is designed to make patient flow easier to monitor and daily coordination easier to manage.</p>
+        <ul class="checklist">
+          <li><span class="check">✓</span><span><b>Reduce avoidable waiting</b><br><small>Make queue status and schedule changes more visible.</small></span></li>
+          <li><span class="check">✓</span><span><b>Improve staff efficiency</b><br><small>Give teams a shared view of what needs attention.</small></span></li>
+          <li><span class="check">✓</span><span><b>Support better resource use</b><br><small>Spot delays and bottlenecks earlier in the day.</small></span></li>
+          <li><span class="check">✓</span><span><b>Keep patients informed</b><br><small>Communicate updates instead of leaving people guessing.</small></span></li>
+        </ul>
+      </div>
+      <aside class="quote"><p>“A better patient experience starts before the consultation—with a clearer, more predictable visit.”</p><small>MediFlow · Smart Queue & Dynamic Appointment System</small></aside>
+    </div>
+  </section>
+  <section class="cta">
+    <div class="wrap"><h2>Ready to make patient flow simpler?</h2><p>See how MediFlow could fit your hospital's workflow. Request a walkthrough and discuss the challenges your team wants to solve first.</p><a class="btn" href="#demo">Request a demo →</a></div>
+  </section>
+  <section class="contact" id="demo">
+    <div class="wrap">
+      <div class="section-head"><span class="eyebrow">LET'S TALK</span><h2>Request a MediFlow demo</h2><p>Tell us a little about your hospital and the queue-management challenges you face.</p></div>
+      <form id="demoForm">
+        <label>Name<input name="name" required placeholder="Your name"></label>
+        <label>Work email<input name="email" type="email" required placeholder="you@hospital.com"></label>
+        <label>Hospital / clinic<input name="hospital" placeholder="Organization name"></label>
+        <label>Role<select name="role"><option>Hospital Operations Manager</option><option>Hospital Administrator</option><option>Doctor / Clinical Lead</option><option>Front-desk / Operations Staff</option><option>Other</option></select></label>
+        <label class="full">What would you like to improve?<textarea name="message" placeholder="For example: long queues, appointment delays, patient updates..."></textarea></label>
+        <div class="full"><button class="btn" type="submit">Prepare demo request →</button><p class="form-note" id="formNote">Demo form preview: submitting opens an email draft. Replace the sample contact email in the code before publishing.</p></div>
+      </form>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap foot"><span><b style="color:white">MediFlow</b> · Smart Queue & Dynamic Appointment System</span><span>Contact: <a href="mailto:YOUR_EMAIL@example.com">YOUR_EMAIL@example.com</a></span><span>© 2026 MediFlow · Student venture concept</span></div></footer>
+<script>
+document.getElementById('demoForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = new FormData(e.target);
+  const subject = encodeURIComponent('MediFlow demo request');
+  const body = encodeURIComponent(
+    'Name: ' + (data.get('name') || '') + '\\n' +
+    'Work email: ' + (data.get('email') || '') + '\\n' +
+    'Hospital/clinic: ' + (data.get('hospital') || '') + '\\n' +
+    'Role: ' + (data.get('role') || '') + '\\n\\n' +
+    'What to improve: ' + (data.get('message') || '')
+  );
+  window.location.href = 'mailto:YOUR_EMAIL@example.com?subject=' + subject + '&body=' + body;
+});
+</script>
+</body>
+</html>
